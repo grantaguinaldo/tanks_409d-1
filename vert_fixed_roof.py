@@ -1,6 +1,11 @@
 import math
 import pandas as pd
 import numpy as np
+import pandas as pd
+import numpy as np
+
+df_chem = pd.read_csv('chemical_db.csv')
+df_met = pd.read_csv('met_db.csv')
 
 
 class VerticalFixedRoofTank:
@@ -50,15 +55,6 @@ class VerticalFixedRoofTank:
         hlx :
         hln :
         ventsetting :
-
-
-
-
-
-
-
-
-
         '''
         self.tkshellht = tkshellht
         self.skliqht = skliqht
@@ -96,6 +92,9 @@ class VerticalFixedRoofTank:
 
         # Atmospheric pressure at facility, user defined from Table 7.1-7.
         self.atmplocal = atmplocal
+
+    def atmp(self):
+        return self.atmplocal
 
     def vq(self):
         '''
@@ -257,77 +256,59 @@ def ventedVaporSpaceSatFactor(pva,
     return 1 / (1 + (0.053 * pva * hvo))
 
 
-def calculateStandingLosses(vv,
-                            wv,
-                            ke,
-                            ks):
-    '''
-    Parameters
-    ----------
-    vv:
+def calculateLosses(vq,
+                    kn,
+                    kp,
+                    wv,
+                    kb,
+                    ke,
+                    ks,
+                    vv):
 
-    wv:
+    standing = 365 * vv * wv * ke * ks
+    working = vq * kn * kp * wv * kb
+    total = standing + working
 
-    ke:
-
-    ks:
-
-    Returns
-    -------
-    Standing losses from the storage tank in lbs/year.
-    '''
-    return 365 * vv * wv * ke * ks
-
-
-def calculateWorkingLosses(vq,
-                           kn,
-                           kp,
-                           wv,
-                           kb):
-    '''
-    Parameters
-    ----------
-    vq:
-
-    kn:
-
-    kp:
-
-    wv:
-
-    kb:
-
-    Returns
-    -------
-    Working losses from the storage tank in lbs/year.
-    '''
-    return vq * kn * kp * wv * kb
+    return [standing, working, total]
 
 
 def rankineToCelsius(r):
     return (r - 491.7) * (5 / 9.)
 
+###########################################################################
 
-tank = VerticalFixedRoofTank(tkshellht=12,
-                             skliqht=8,
-                             tkrfslope=0.0625,
-                             diameter=6,
-                             ins=1491,
-                             solarabs=0.25,
-                             tax=63.5,
-                             tan=37.9,
-                             atmplocal=12.08,
-                             throughput=8450,
-                             productfactor='other stocks',
-                             hlx=11.5,
-                             hln=4.5,
-                             ventsetting=1)
+
+INPUT_CITY = 'Denver, Colorado'
+INPUT_TANK = [12, 8, 6]  # tkshellht, skliqht, diameter
+INPUT_CONTENTS = [8450, 'other stocks', 11.5, 4.5]  # throughput, productfactor, hlx, hln
+
+df_met_sub = df_met[['ATMOS_PRS', 'INSOL_ANN', 'CTYST', 'CITY', 'STATE', 'TAX_ANN', 'TAN_ANN']]
+df_met_filter = df_met_sub[df_met_sub['CTYST'] == INPUT_CITY]
+
+MET_LIST = df_met_filter.values.tolist()
+
+tank = VerticalFixedRoofTank(tkshellht=INPUT_TANK[0],  # From User Data
+                             skliqht=INPUT_TANK[1],  # From User Data
+                             tkrfslope=0.0625,  # Default
+                             diameter=INPUT_TANK[2],  # From User Data
+                             ins=1491,  # Default
+                             solarabs=0.25,  # From User Data
+                             tax=MET_LIST[0][5],  # From Met Table
+                             tan=MET_LIST[0][6],  # From Met Table
+                             atmplocal=MET_LIST[0][0],  # From Met Table
+                             throughput=INPUT_CONTENTS[0],  # From User Data
+                             productfactor=INPUT_CONTENTS[1],  # From User Data
+                             hlx=INPUT_CONTENTS[2],  # From User Data
+                             hln=INPUT_CONTENTS[3],  # From User Data
+                             ventsetting=1)  # Default
 
 # Converts from Rankine to deg C.
 tla_c = rankineToCelsius(tank.tla())
 tlx_c = rankineToCelsius(tank.tlx_r())
 tln_c = rankineToCelsius(tank.tln_r())
 
+###########################################################################
+# TODO: POPULATE MATRIX OF CHEMICAL PROPERTIES AND QUERY DF
 
 # Comes from SQL Database and is needed to build mixture.
 # User would define the components in mixture.
@@ -347,6 +328,41 @@ df1['comp_vp_tlx'] = 10**(df1['antoine_coef_a'] -
                                                       (df1['antoine_coef_c'])))) / 51.715
 
 df1['comp_vp_tln'] = 10**(df1['antoine_coef_a'] - ((df1['antoine_coef_b']) / (tln_c + (df1['antoine_coef_c'])))) / 51.715
+
+
+###########################################################################
+# TODO: POPULATE MATRIX OF CHEMICAL QUANTITIES AND QUERY DF
+
+# INTEGRATE THIS CODE TO BUILD THE MIXTURE PROFILE
+CHEM_LIST = ['Cyclohexane', 'Benzene', 'Toluene']
+ANNUAL_QUANTITY = [101, 2812, 258]
+
+name_ = np.array([df_chem[df_chem['NAME'].isin(CHEM_LIST)]['NAME'].tolist()])
+cas_ = np.array([df_chem[df_chem['NAME'].isin(CHEM_LIST)]['CAS'].tolist()])
+mw_ = np.array([df_chem[df_chem['NAME'].isin(CHEM_LIST)]['MOLWT'].tolist()])
+vp_a = np.array([df_chem[df_chem['NAME'].isin(CHEM_LIST)]['VP_COEF_A'].tolist()])
+vp_b = np.array([df_chem[df_chem['NAME'].isin(CHEM_LIST)]['VP_COEF_B'].tolist()])
+vp_c = np.array([df_chem[df_chem['NAME'].isin(CHEM_LIST)]['VP_COEF_C'].tolist()])
+den_ = np.array([df_chem[df_chem['NAME'].isin(CHEM_LIST)]['L_DENS'].tolist()])
+cat_ = np.array([df_chem[df_chem['NAME'].isin(CHEM_LIST)]['CATEGORY'].tolist()])
+arr = np.concatenate((name_, cat_, cas_, mw_, den_, vp_a, vp_b, vp_c), axis=0).T
+
+df_chem_filter = pd.DataFrame(data=arr, columns=['component',
+                                                 'category',
+                                                 'cas_no',
+                                                 'mw',
+                                                 'density',
+                                                 'antoine_coef_a',
+                                                 'antoine_coef_b',
+                                                 'antoine_coef_c'])
+
+CHEM_LIST = ['Cyclohexane', 'Benzene', 'Toluene']
+ANNUAL_QUANTITY = [101, 2812, 258]
+CAS = df_chem_filter['cas_no'].values.tolist()
+MIXTURE_JSON = [{'component': chem,
+                 'cas': cas,
+                 'amount': amt} for chem, cas, amt in zip(CHEM_LIST, CAS, ANNUAL_QUANTITY)]
+###########################################################################
 
 phH1 = ['Benzene', '71-43-2', 78.11, 2812]
 phMe1 = ['Toluene', '108-88-3', 92.14, 258]
@@ -380,32 +396,45 @@ df['comp_partial_tlx'] = df['comp_mole_xi'] * df['comp_vp_tlx']
 
 tot_vp_tln = np.sum(df['comp_partial_tln'].tolist())
 tot_vp_tlx = np.sum(df['comp_partial_tlx'].tolist())
+###########################################################################
+
+tv = tank.tv()  # Calculated Field
+deltv = tank.deltv()  # Calculated Field
+tla = tank.tla()  # Calculated Field
+delbpv = tank.bventpress()  # Calculated Field
+atmp = tank.atmp()  # From Met Table
+hvo = tank.hvo  # Calculated Field
+vq = tank.vq()  # Calculated Field
+kn = tank.kn()  # Calculated Field
+kp = tank.kp()  # Calculated Field
+kb = tank.kb()  # Calculated Field
+vv = tank.vv()  # Calculated Field
 
 wv = stockDensity(mv=vapor_mw,
                   pva=vp_mixture,
-                  tv=tank.tv())
+                  tv=tv)
 
 delpv = vapPressureRange(plx=tot_vp_tlx,
                          pln=tot_vp_tln)
 
-ke = vaporSpaceExpansionFactor(deltv=tank.deltv(),
-                               tla=tank.tla(),
+ke = vaporSpaceExpansionFactor(deltv=deltv,
+                               tla=tla,
                                delpv=delpv,
-                               delbpv=tank.bventpress(),
-                               atmp=12.08,
+                               delbpv=delbpv,
+                               atmp=atmp,
                                pva=vp_mixture)
 
-ks = ventedVaporSpaceSatFactor(pva=vp_mixture, hvo=tank.hvo)
+ks = ventedVaporSpaceSatFactor(pva=vp_mixture, hvo=hvo)
 
-standing = calculateStandingLosses(vv=tank.vv(),
-                                   wv=wv,
-                                   ke=ke,
-                                   ks=ks)
+losses = calculateLosses(vq=vq,
+                         kn=kn,
+                         kp=kp,
+                         wv=wv,
+                         kb=kb,
+                         vv=vv,
+                         ke=ke,
+                         ks=ks)
 
-working = calculateWorkingLosses(vq=tank.vq(),
-                                 kn=tank.kn(),
-                                 kp=tank.kp(),
-                                 wv=wv,
-                                 kb=tank.kb())
-
-print('Total Losses from Tank: {:.4f} lbs/year'.format(standing + working))
+print('Total Losses from Tank: {:.4f} lbs/year'.format(losses[2]))
+print('Total Working Losses from Tank: {:.4f} lbs/year'.format(losses[1]))
+print('Total Standing Losses from Tank: {:.4f} lbs/year'.format(losses[0]))
