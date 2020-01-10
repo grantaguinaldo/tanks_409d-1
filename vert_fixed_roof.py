@@ -1,8 +1,6 @@
 import math
 import pandas as pd
 import numpy as np
-import pandas as pd
-import numpy as np
 
 df_chem = pd.read_csv('chemical_db.csv')
 df_met = pd.read_csv('met_db.csv')
