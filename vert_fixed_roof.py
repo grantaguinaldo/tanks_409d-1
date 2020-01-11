@@ -17,6 +17,8 @@ df_met_filter = df_met_sub[df_met_sub['CTYST'] == INPUT_CITY]
 
 MET_LIST = df_met_filter.values.tolist()
 
+# TODO: Need to work on solarabs values based on tank color and condition.
+
 tank = VerticalFixedRoofTank(tkshellht=INPUT_TANK[0],           # From User Data
                              skliqht=INPUT_TANK[1],             # From User Data
                              tkrfslope=0.0625,                  # Default
