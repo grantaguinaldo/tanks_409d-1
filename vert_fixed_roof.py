@@ -11,6 +11,7 @@ INPUT_TANK = [12, 8, 6]                             # tkshellht, skliqht, diamet
 INPUT_CONTENTS = [8450, 'other stocks', 11.5, 4.5]  # throughput, productfactor, hlx, hln
 CHEM_LIST = ['Cyclohexane', 'Benzene', 'Toluene']   # From User Data
 ANNUAL_QUANTITY = [101, 2812, 258]                  # From User Data
+DEFAULT_LIST = [0.0625, 1491, 1]                    # tkrfslope, ins, ventsetting 
 
 df_met_sub = df_met[['ATMOS_PRS', 'INSOL_ANN', 'CTYST', 'CITY', 'STATE', 'TAX_ANN', 'TAN_ANN']]
 df_met_filter = df_met_sub[df_met_sub['CTYST'] == INPUT_CITY]
@@ -21,9 +22,9 @@ MET_LIST = df_met_filter.values.tolist()
 
 tank = VerticalFixedRoofTank(tkshellht=INPUT_TANK[0],           # From User Data
                              skliqht=INPUT_TANK[1],             # From User Data
-                             tkrfslope=0.0625,                  # Default
+                             tkrfslope=DEFAULT_LIST[0],         # Default
                              diameter=INPUT_TANK[2],            # From User Data
-                             ins=1491,                          # Default
+                             ins=DEFAULT_LIST[1],               # Default
                              solarabs=0.25,                     # From User Data
                              tax=MET_LIST[0][5],                # From Met Table
                              tan=MET_LIST[0][6],                # From Met Table
@@ -32,7 +33,7 @@ tank = VerticalFixedRoofTank(tkshellht=INPUT_TANK[0],           # From User Data
                              productfactor=INPUT_CONTENTS[1],   # From User Data
                              hlx=INPUT_CONTENTS[2],             # From User Data
                              hln=INPUT_CONTENTS[3],             # From User Data
-                             ventsetting=1)                     # Default
+                             ventsetting=DEFAULT_LIST[2])       # Default
 
 
 name_ = np.array([df_chem[df_chem['NAME'].isin(CHEM_LIST)]['NAME'].tolist()])
