@@ -41,12 +41,6 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
 
     df1 = pd.merge(df2, df3, on='component', how='inner')
 
-    # TODO: Need to create another df that holds chem and amt,
-    # and do a inner join on the component name wiht df1
-    # so we don't lose the postion of the materials and the amounts.
-
-    # df1['comp_amt'] = annual_qty
-
     df1['comp_vp'] = 10**(df1['antoine_coef_a'].astype(float) -
                           ((df1['antoine_coef_b'].astype(float)) /
                            (tank.tla_c() +
@@ -54,13 +48,13 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
 
     df1['comp_vp_tlx'] = 10**(df1['antoine_coef_a'].astype(float) -
                               ((df1['antoine_coef_b'].astype(float)) /
-                                (tank.tlx_c() +
-                                 (df1['antoine_coef_c'].astype(float))))) / 51.715
+                               (tank.tlx_c() +
+                                (df1['antoine_coef_c'].astype(float))))) / 51.715
 
     df1['comp_vp_tln'] = 10**(df1['antoine_coef_a'].astype(float) -
                               ((df1['antoine_coef_b'].astype(float)) /
-                                (tank.tln_c() +
-                                    (df1['antoine_coef_c'].astype(float))))) / 51.715
+                               (tank.tln_c() +
+                                (df1['antoine_coef_c'].astype(float))))) / 51.715
 
     df1['comp_mole'] = df1['comp_amt'].astype(float) / df1['mw'].astype(float)
     tot_moles = np.sum(df1['comp_mole'].tolist())
@@ -71,7 +65,7 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
 
     df1['comp_vap_mole_frac'] = df1['comp_partial'].astype(float) / vp_mixture
     df1['comp_vapor_mw_xi'] = df1['mw'].astype(float) * \
-                              df1['comp_vap_mole_frac'].astype(float)
+        df1['comp_vap_mole_frac'].astype(float)
 
     vapor_mw = np.sum(df1['comp_vapor_mw_xi'].tolist())
 
