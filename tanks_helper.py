@@ -30,28 +30,37 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
     vp_c = np.array([df[df['NAME'].isin(chem_list)]['VP_COEF_C'].tolist()])
     arr = np.concatenate((name_, cas_, mw_, vp_a, vp_b, vp_c), axis=0).T
 
-    df1 = pd.DataFrame(data=arr, columns=['component',
+    df3 = pd.DataFrame(data=arr, columns=['component',
                                           'cas_no',
                                           'mw',
                                           'antoine_coef_a',
                                           'antoine_coef_b',
                                           'antoine_coef_c'])
 
+    df2 = pd.DataFrame({'component': chem_list, 'comp_amt': annual_qty})
+
+    df1 = pd.merge(df2, df3, on='component', how='inner')
+
     # TODO: Need to create another df that holds chem and amt,
     # and do a inner join on the component name wiht df1
     # so we don't lose the postion of the materials and the amounts.
 
-    df1['comp_amt'] = annual_qty
+    # df1['comp_amt'] = annual_qty
 
     df1['comp_vp'] = 10**(df1['antoine_coef_a'].astype(float) -
-                          ((df1['antoine_coef_b'].astype(float)) / (tank.tla_c() +
-                                                                    (df1['antoine_coef_c'].astype(float))))) / 51.715
+                          ((df1['antoine_coef_b'].astype(float)) /
+                           (tank.tla_c() +
+                            (df1['antoine_coef_c'].astype(float))))) / 51.715
 
     df1['comp_vp_tlx'] = 10**(df1['antoine_coef_a'].astype(float) -
-                              ((df1['antoine_coef_b'].astype(float)) / (tank.tlx_c() +
-                                                                        (df1['antoine_coef_c'].astype(float))))) / 51.715
+                              ((df1['antoine_coef_b'].astype(float)) /
+                                (tank.tlx_c() +
+                                 (df1['antoine_coef_c'].astype(float))))) / 51.715
 
-    df1['comp_vp_tln'] = 10**(df1['antoine_coef_a'].astype(float) - ((df1['antoine_coef_b'].astype(float)) / (tank.tln_c() + (df1['antoine_coef_c'].astype(float))))) / 51.715
+    df1['comp_vp_tln'] = 10**(df1['antoine_coef_a'].astype(float) -
+                              ((df1['antoine_coef_b'].astype(float)) /
+                                (tank.tln_c() +
+                                    (df1['antoine_coef_c'].astype(float))))) / 51.715
 
     df1['comp_mole'] = df1['comp_amt'].astype(float) / df1['mw'].astype(float)
     tot_moles = np.sum(df1['comp_mole'].tolist())
@@ -61,7 +70,9 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
     vp_mixture = np.sum(df1['comp_partial'].tolist())
 
     df1['comp_vap_mole_frac'] = df1['comp_partial'].astype(float) / vp_mixture
-    df1['comp_vapor_mw_xi'] = df1['mw'].astype(float) * df1['comp_vap_mole_frac'].astype(float)
+    df1['comp_vapor_mw_xi'] = df1['mw'].astype(float) * \
+                              df1['comp_vap_mole_frac'].astype(float)
+
     vapor_mw = np.sum(df1['comp_vapor_mw_xi'].tolist())
 
     df1['comp_vp_tln'] = df1['comp_vp_tln'].tolist()
@@ -108,19 +119,13 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
     df1['work_loss_xi'] = df1['vap_wt_xi'] * calc.workingLosses()
     df1['total_loss_xi'] = df1['vap_wt_xi'] * calc.totalLosses()
 
-    print('Exporting dataframe ...')
-
     total_losses = np.sum(df1['total_loss_xi'].values.tolist())
     working_losses = np.sum(df1['work_loss_xi'].values.tolist())
     standing_losses = np.sum(df1['stand_loss_xi'].values.tolist())
 
-    print('Exporting DataFrame ...')
-
     df1.to_html(os.path.join('templates', file_name))
 
     loss_list = [total_losses, working_losses, standing_losses]
-
-    print(loss_list)
 
     return loss_list
 
@@ -230,7 +235,7 @@ class VerticalFixedRoofTank:
     def kn(self):
         '''
         Returns the turnover factor, as calculated
-        in Eqn: 1-36 and 1-37.
+        in Eqn: 1-35.
         '''
         delta_liquid_height = (self.hlx - self.hln)
         turnover_factor_n = self.vq()
@@ -242,12 +247,12 @@ class VerticalFixedRoofTank:
         if n <= 36:
             return 1
         else:
-            return n
+            return (180 + n) / (6 * n)
 
     def kp(self):
         '''
         Returns product factor, dimensionless constant,
-        based on product type.
+        based on product type as calculated in Eqn: 1-37.
         '''
         if self.productfactor == 'crude oils':
             return 0.75
@@ -295,13 +300,15 @@ class VerticalFixedRoofTank:
 
     def deltv(self):
         '''
-        Returns the Daily Average Temperature Range, in Rankine as calculated from Eqn: 1-7
+        Returns the Daily Average Temperature Range,
+        in Rankine as calculated from Eqn: 1-7
         '''
         return (0.7 * self.delta_ta_r) + (0.02 * self.solarabs * self.ins)
 
     def tlx_r(self):
         '''
-        Returns the Maximum Liquid Temperature, in Rankine as calculated from Figure 7.1-17
+        Returns the Maximum Liquid Temperature,
+        in Rankine as calculated from Figure 7.1-17
         '''
         return self.tla() + (0.25 * (self.deltv()))
 
@@ -311,7 +318,8 @@ class VerticalFixedRoofTank:
 
     def tln_r(self):
         '''
-        Returns the Minimum Liquid Temperature, in Rankine as calculated from Figure 7.1-17
+        Returns the Minimum Liquid Temperature,
+        in Rankine as calculated from Figure 7.1-17
         '''
         return self.tla() - (0.25 * (self.deltv()))
 
@@ -394,13 +402,19 @@ class EmissionCalculations:
         return self.plx - self.pln
 
     def standingLosses(self):
-
+        '''
+        Total standing losses from vert. fixed roof tank, Eqn: 1-2.
+        '''
         return 365 * self.vv * self.stockDensity() * self.vaporSpaceExpansionFactor() * self.ventedVaporSpaceSatFactor()
 
     def workingLosses(self):
-
+        '''
+        Total working losses from vert. fixed roof tank, Eqn: 1-35.
+        '''
         return self.vq * self.kn * self.kp * self.stockDensity() * self.kb
 
     def totalLosses(self):
-
+        '''
+        Total losses from vert. fixed roof tank, Eqn: 1-1.
+        '''
         return self.standingLosses() + self.workingLosses()
