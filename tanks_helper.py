@@ -37,6 +37,10 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
                                           'antoine_coef_b',
                                           'antoine_coef_c'])
 
+    # TODO: Need to create another df that holds chem and amt,
+    # and do a inner join on the component name wiht df1
+    # so we don't lose the postion of the materials and the amounts.
+
     df1['comp_amt'] = annual_qty
 
     df1['comp_vp'] = 10**(df1['antoine_coef_a'].astype(float) -
