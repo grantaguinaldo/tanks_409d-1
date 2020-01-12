@@ -207,6 +207,7 @@ class VerticalFixedRoofTank:
         self.atmplocal = atmplocal
 
     def atmp(self):
+
         return self.atmplocal
 
     def vq(self):
@@ -369,15 +370,19 @@ class EmissionCalculations:
         self.vv = vv
 
     def vapPressureRange(self):
+
         return self.plx - self.pln
 
     def stockDensity(self):
+
         return ((self.mv * self.pva) / (10.731 * self.tv))
 
     def vaporSpaceExpansionFactor(self):
+
         return (self.deltv / self.tla) + ((self.vapPressureRange() - self.delbpv) / (self.atmp - self.pva))
 
     def ventedVaporSpaceSatFactor(self):
+
         return 1 / (1 + (0.053 * self.pva * self.hvo))
 
     def vapPressureRange(self):
