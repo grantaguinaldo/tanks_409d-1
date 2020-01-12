@@ -3,11 +3,21 @@ import pandas as pd
 import numpy as np
 from tanks_helper import *
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+
+POST_JSON = {
+    'input_city_': 'Denver, Colorado',
+    'input_tank_': [12, 8, 6],
+    'input_contents': [8450, 'other stocks', 11.5, 4.5],
+    'input_chem': ['Cyclohexane', 'Benzene', 'Toluene'],
+    'input_qty': [101, 2812, 258],
+    'input_default': [0.0625, 1491, 1],
+    'input_condition': ['White', 'None', 'Aged']}
 
 app = Flask(__name__)
 
 # TODO: Need to know how to pass the payload from a post request into this route.
+# https://stackoverflow.com/questions/20001229/how-to-get-posted-json-in-flask
 
 
 @app.route('/verticalfixedrooftank/', methods=['POST'])
