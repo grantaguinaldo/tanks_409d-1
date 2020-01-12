@@ -28,18 +28,6 @@ def vfrtk():
     DEFAULT_LIST = POST_DATA['input_default']
     CONDITION_LIST = POST_DATA['input_condition']
 
-    ######################################################################
-    # Needs to come into the app as a POST request payload.
-    #
-    # INPUT_CITY = 'Denver, Colorado'                     # From User Data
-    # INPUT_TANK = [12, 8, 6]                             # tkshellht, skliqht, diameter
-    # INPUT_CONTENTS = [8450, 'other stocks', 11.5, 4.5]  # throughput, productfactor, hlx, hln
-    # CHEM_LIST = ['Cyclohexane', 'Benzene', 'Toluene']   # From User Data
-    # ANNUAL_QUANTITY = [101, 2812, 258]                  # From User Data
-    # DEFAULT_LIST = [0.0625, 1491, 1]                    # tkrfslope, ins, ventsetting
-    # CONDITION_LIST = ['White', 'None', 'Aged']          # color, shade, condition
-    ######################################################################
-
     MET_LIST = filterMetList(df=df_met, input_city=INPUT_CITY)
 
     solarabs = solarabsLookUp(df=df_shade,
