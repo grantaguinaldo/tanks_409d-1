@@ -106,7 +106,19 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
 
     print('Exporting dataframe ...')
 
-    return df1.to_html(os.path.join('templates', file_name))
+    total_losses = np.sum(df1['total_loss_xi'].values.tolist())
+    working_losses = np.sum(df1['work_loss_xi'].values.tolist())
+    standing_losses = np.sum(df1['stand_loss_xi'].values.tolist())
+
+    print('Exporting DataFrame ...')
+
+    df1.to_html(os.path.join('templates', file_name))
+
+    loss_list = [total_losses, working_losses, standing_losses]
+
+    print(loss_list)
+
+    return loss_list
 
 
 class VerticalFixedRoofTank:
