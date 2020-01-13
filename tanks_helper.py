@@ -121,6 +121,8 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
 
     loss_list = [total_losses, working_losses, standing_losses]
 
+    print(loss_list)
+
     return loss_list
 
 
@@ -189,11 +191,14 @@ class VerticalFixedRoofTank:
         self.tan = tan
 
         self.rad_ = (1 / 2.) * self.diameter
+
+        # Vapor Space Outage, Eqn: 1-16.
         self.hro_ = (1 / 3.) * self.rad_ * self.tkrfslope
 
         self.hvo = self.tkshellht - self.skliqht + self.hro_
 
-        # Breather vent pressure setting (p_bp: pressure setting; p_bv: vacuum setting)
+        # Breather vent pressure setting (p_bp: pressure setting;
+        # p_bv: vacuum setting)
         self.p_bp = 0.03
         self.p_bv = -0.03
 
@@ -206,11 +211,14 @@ class VerticalFixedRoofTank:
         self.taa = (self.tax_r + self.tan_r) * (1 / 2.)
         self.tb = self.taa + (0.003 * self.solarabs * self.ins)
 
-        # Atmospheric pressure at facility, user defined from Table 7.1-7.
+        # Atmospheric pressure at facility,
+        # user defined from Table 7.1-7.
         self.atmplocal = atmplocal
 
     def atmp(self):
-
+        '''
+        Returns the atmospheric pressure of the tank.
+        '''
         return self.atmplocal
 
     def vq(self):
@@ -247,6 +255,9 @@ class VerticalFixedRoofTank:
         '''
         Returns product factor, dimensionless constant,
         based on product type as calculated in Eqn: 1-37.
+
+        See note from Eqn: 1-35, throughput is in gal and
+        converted to BBL (1 BBL = 42 Gal)
         '''
         if self.productfactor == 'crude oils':
             return 0.75
@@ -255,11 +266,6 @@ class VerticalFixedRoofTank:
         else:
             raise ValueError('Incorrect product type, \
             must be either crude oils or other stocks')
-
-    '''
-    See note from Eqn: 1-35, throughput is in gal and
-    converted to BBL (1 BBL = 42 Gal)
-    '''
 
     def hvo(self):
         '''
@@ -270,7 +276,7 @@ class VerticalFixedRoofTank:
 
     def vv(self):
         '''
-        Returns the Vapor Space Volume of the storage tank.
+        Returns the Vapor Space Volume, Eqn: 1-3.
         '''
         return (math.pi) * (1 / 4.) * (self.diameter**2) * self.hvo
 
@@ -319,24 +325,26 @@ class VerticalFixedRoofTank:
 
     def tlx_f(self):
         '''
-        Returns the Maximum Liquid Temperature, in F as calculated from Figure 7.1-17
-        Assume: 1 R − 459.67 = -458.7 F
+        Returns the Maximum Liquid Temperature, in F
+        as calculated from Figure 7.1-17
         '''
         return self.tlx_r() - 458.67
 
     def tln_f(self):
         '''
-        Returns the Minimum Liquid Temperature, in F as calculated from Figure 7.1-17
-        Assume: 1 R − 459.67 = -458.7 F
+        Returns the Minimum Liquid Temperature, in F
+        as calculated from Figure 7.1-17
         '''
         return self.tln_r() - 458.67
 
     def tln_c(self):
+
         return (self.tln_r() - 491.7) * (5. / 9.)
 
     def bventpress(self):
         '''
-        Returns Breather Vent Pressure, delta_pb, calculated from Eqn: 1-10
+        Returns Breather Vent Pressure, delta_pb,
+        calculated from Eqn: 1-10
         '''
         return self.p_bp - self.p_bv
 
@@ -376,11 +384,15 @@ class EmissionCalculations:
         self.vv = vv
 
     def vapPressureRange(self):
-
+        '''
+        Daily vapor pressure range, Eqn: 1-9.
+        '''
         return self.plx - self.pln
 
     def stockDensity(self):
-
+        '''
+        Stock Vapor Density, Eqn: 1-22. (W sub v)
+        '''
         return ((self.mv * self.pva) / (10.731 * self.tv))
 
     def vaporSpaceExpansionFactor(self):
@@ -388,11 +400,15 @@ class EmissionCalculations:
         return (self.deltv / self.tla) + ((self.vapPressureRange() - self.delbpv) / (self.atmp - self.pva))
 
     def ventedVaporSpaceSatFactor(self):
-
+        '''
+        Vented vapor space saturation factor, Eqn: 1-12. (K sub s)
+        '''
         return 1 / (1 + (0.053 * self.pva * self.hvo))
 
     def vapPressureRange(self):
-
+        '''
+        Average daily vapor pressure range, Eqn: 1-9.
+        '''
         return self.plx - self.pln
 
     def standingLosses(self):
