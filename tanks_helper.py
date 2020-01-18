@@ -117,7 +117,7 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
     working_losses = np.sum(df1['work_loss_xi'].values.tolist())
     standing_losses = np.sum(df1['stand_loss_xi'].values.tolist())
 
-    df1.to_html(os.path.join('templates', file_name))
+    df1.T.to_html(os.path.join('templates', file_name))
 
     loss_list = [total_losses, working_losses, standing_losses]
 
