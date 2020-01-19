@@ -20,7 +20,9 @@ def solarabsLookUp(df, color, shade, condition):
         raise ValueError('Error: Color, Shade, Condition combination is not valid.')
 
 
-def calculation(df, chem_list, annual_qty, tank, file_name):
+def calculation(df, chem_list, annual_qty,
+                tank, file_name,
+                tank_name, tank_type, facility_name):
 
     name_ = np.array([df[df['NAME'].isin(chem_list)]['NAME'].tolist()])
     cas_ = np.array([df[df['NAME'].isin(chem_list)]['CAS'].tolist()])
@@ -37,9 +39,17 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
                                           'antoine_coef_b',
                                           'antoine_coef_c'])
 
+    df3['tank_name'] = tank_name
+    df3['tank_type'] = tank_type
+    df3['facility_name'] = facility_name
+
     df2 = pd.DataFrame({'component': chem_list, 'comp_amt': annual_qty})
 
     df1 = pd.merge(df2, df3, on='component', how='inner')
+
+    df1 = df1[['facility_name', 'tank_name', 'tank_type', 'component',
+               'cas_no', 'mw', 'component', 'comp_amt',
+               'antoine_coef_a', 'antoine_coef_b', 'antoine_coef_c']]
 
     df1['comp_vp'] = 10**(df1['antoine_coef_a'].astype(float) -
                           ((df1['antoine_coef_b'].astype(float)) /
@@ -117,7 +127,20 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
     working_losses = np.sum(df1['work_loss_xi'].values.tolist())
     standing_losses = np.sum(df1['stand_loss_xi'].values.tolist())
 
-    df1.T.to_html(os.path.join('templates', file_name))
+    df1.T.to_html(os.path.join('templates', file_name),
+                  classes=['emission summary'],
+                  border=1,
+                  bold_rows=True)
+
+    df2 = pd.DataFrame({'standing_losses': [standing_losses],
+                        'working_losses': [working_losses],
+                        'total_losses': [total_losses]},
+                       index=[tank_name])
+
+    df2.to_html(os.path.join('templates', 'loss_summary.html'),
+                classes=['loss summary'],
+                border=1,
+                bold_rows=True)
 
     loss_list = [total_losses, working_losses, standing_losses]
 
@@ -126,7 +149,7 @@ def calculation(df, chem_list, annual_qty, tank, file_name):
     return loss_list
 
 
-class VerticalFixedRoofTank:
+class FixedRoofTank:
 
     def __init__(self,
                  tkshellht,
@@ -142,7 +165,8 @@ class VerticalFixedRoofTank:
                  productfactor,
                  hlx,
                  hln,
-                 ventsetting):
+                 ventsetting,
+                 tanktype):
         '''
         Parameters
         ----------
@@ -185,6 +209,7 @@ class VerticalFixedRoofTank:
         self.hlx = hlx
         self.hln = hln
         self.ventsetting = 1
+        self.tanktype = tanktype
 
         # Values are in deg. F
         self.tax = tax
@@ -265,20 +290,31 @@ class VerticalFixedRoofTank:
             return 1.0
         else:
             raise ValueError('Incorrect product type, \
-            must be either crude oils or other stocks')
+            must be either crude oils or other stocks.')
 
     def hvo(self):
         '''
         Returns the Vapor Space Outage in units of
         Feet as calculated from Eqn: 1-16
         '''
-        return self.hvo
+        if self.tanktype == 'Vertical':
+            return self.hvo
+        elif self.tanktype == 'Horizontal':
+            return self.diameter * (1 / 2.) * (math.pi / 4)
+        else:
+            raise ValueError('Incorrect Tank Type, \
+                must be either Horizontal or Vertical.')
 
     def vv(self):
         '''
         Returns the Vapor Space Volume, Eqn: 1-3.
         '''
-        return (math.pi) * (1 / 4.) * (self.diameter**2) * self.hvo
+        if self.tanktype == 'Vertical':
+            return (math.pi) * (1 / 4.) * (self.diameter**2) * self.hvo
+        elif self.tanktype == 'Horizontal':
+            de = ((self.tkshellht * self.diameter) /
+                  ((math.pi) * (1 / 4.))) ** (1 / 2.)
+            return (math.pi / 4.) * (de)**2 * self.hvo
 
     def tla(self):
         '''

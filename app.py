@@ -27,6 +27,9 @@ def vfrtk():
     ANNUAL_QUANTITY = POST_DATA['input_qty']
     DEFAULT_LIST = POST_DATA['input_default']
     CONDITION_LIST = POST_DATA['input_condition']
+    INPUT_TANK_TYPE = POST_DATA['input_tank_type']
+    INPUT_TANK_NAME = POST_DATA['input_tank_name']
+    INPUT_FACILITY_NAME = POST_DATA['input_facility_name']
 
     MET_LIST = filterMetList(df=df_met, input_city=INPUT_CITY)
 
@@ -35,26 +38,30 @@ def vfrtk():
                               shade=CONDITION_LIST[1],
                               condition=CONDITION_LIST[2])
 
-    tank = VerticalFixedRoofTank(tkshellht=INPUT_TANK[0],                 # From User Data
-                                 skliqht=INPUT_TANK[1],                   # From User Data
-                                 tkrfslope=DEFAULT_LIST[0],               # Default
-                                 diameter=INPUT_TANK[2],                  # From User Data
-                                 ins=DEFAULT_LIST[1],                     # Default
-                                 solarabs=solarabs,
-                                 tax=MET_LIST[0][5],                      # From Met Table
-                                 tan=MET_LIST[0][6],                      # From Met Table
-                                 atmplocal=MET_LIST[0][0],                # From Met Table
-                                 throughput=INPUT_CONTENTS[0],            # From User Data
-                                 productfactor=INPUT_CONTENTS[1],         # From User Data
-                                 hlx=INPUT_CONTENTS[2],                   # From User Data
-                                 hln=INPUT_CONTENTS[3],                   # From User Data
-                                 ventsetting=DEFAULT_LIST[2])             # Default
+    tank = FixedRoofTank(tkshellht=INPUT_TANK[0],                         # From User Data
+                         skliqht=INPUT_TANK[1],                   # From User Data
+                         tkrfslope=DEFAULT_LIST[0],               # Default
+                         diameter=INPUT_TANK[2],                  # From User Data
+                         ins=DEFAULT_LIST[1],                     # Default
+                         solarabs=solarabs,
+                         tax=MET_LIST[0][5],                      # From Met Table
+                         tan=MET_LIST[0][6],                      # From Met Table
+                         atmplocal=MET_LIST[0][0],                # From Met Table
+                         throughput=INPUT_CONTENTS[0],            # From User Data
+                         productfactor=INPUT_CONTENTS[1],         # From User Data
+                         hlx=INPUT_CONTENTS[2],                   # From User Data
+                         hln=INPUT_CONTENTS[3],                   # From User Data
+                         ventsetting=DEFAULT_LIST[2],
+                         tanktype=INPUT_TANK_TYPE)                # Default
 
     calculation(df=df_chem,
                 chem_list=CHEM_LIST,
                 annual_qty=ANNUAL_QUANTITY,
                 tank=tank,
-                file_name='vert_fixed_roof_tk.html')
+                file_name='vert_fixed_roof_tk.html',
+                tank_name=INPUT_TANK_NAME,
+                tank_type=INPUT_TANK_TYPE,
+                facility_name=INPUT_FACILITY_NAME)
 
     print('At the end of the script!')
 
