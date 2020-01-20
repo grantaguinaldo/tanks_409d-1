@@ -33,7 +33,9 @@ def vfrtk():
 
     geocoder_conn_str(input_addr=INPUT_FACILITY_ADDR,
                       asset_pos=INPUT_TANK_GEO,
-                      asset_name=INPUT_TANK_NAME)
+                      asset_name=INPUT_TANK_NAME,
+                      facility_name=INPUT_FACILITY_NAME,
+                      facility_addr=INPUT_FACILITY_ADDR)
 
     MET_LIST = filterMetList(df=df_met, input_city=INPUT_CITY)
 

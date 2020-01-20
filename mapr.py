@@ -5,7 +5,7 @@ import os
 import api_key
 
 
-def geocoder_conn_str(input_addr, asset_pos, asset_name):
+def geocoder_conn_str(input_addr, asset_pos, asset_name, facility_name, facility_addr):
 
     QUERY = '%20'.join(input_addr.split(' '))
     BASE = 'https://us1.locationiq.com/v1/search.php?key='
@@ -21,6 +21,6 @@ def geocoder_conn_str(input_addr, asset_pos, asset_name):
         zoom_start=16,
         tiles='OpenStreetMap')
 
-    folium.Marker(asset_pos, tooltip=asset_name).add_to(m)
+    folium.Marker(asset_pos, popup=facility_name, tooltip=asset_name).add_to(m)
 
     return m.save('./templates/map.html')
