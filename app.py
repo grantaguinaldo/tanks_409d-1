@@ -42,11 +42,11 @@ def vfrtk():
                               shade=CONDITION_LIST[1],
                               condition=CONDITION_LIST[2])
 
-    tank = FixedRoofTank(tkshellht=INPUT_TANK[0],                         # From User Data
+    tank = FixedRoofTank(tkshellht=INPUT_TANK[0],                 # From User Data
                          skliqht=INPUT_TANK[1],                   # From User Data
                          tkrfslope=DEFAULT_LIST[0],               # Default
                          diameter=INPUT_TANK[2],                  # From User Data
-                         ins=DEFAULT_LIST[1],                     # Default
+                         ins=MET_LIST[0][1],                      # From Met Table
                          solarabs=solarabs,
                          tax=MET_LIST[0][5],                      # From Met Table
                          tan=MET_LIST[0][6],                      # From Met Table
@@ -55,7 +55,7 @@ def vfrtk():
                          productfactor=INPUT_CONTENTS[1],         # From User Data
                          hlx=INPUT_CONTENTS[2],                   # From User Data
                          hln=INPUT_CONTENTS[3],                   # From User Data
-                         ventsetting=DEFAULT_LIST[2],
+                         ventsetting=DEFAULT_LIST[1],
                          tanktype=INPUT_TANK_TYPE)                # Default
 
     calculation(df=df_chem,
