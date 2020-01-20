@@ -70,8 +70,8 @@ def vfrtk():
     return render_template('vert_fixed_roof_tk.html')
 
 
-@app.route('/')
-def index():
+@app.route('/is_alive')
+def is_alive():
     return 'This is Tanks 4.09_d on the Web'
 
 
@@ -88,6 +88,11 @@ def summary():
 @app.route('/map')
 def map():
     return render_template('map.html')
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
 if __name__ == "__main__":
