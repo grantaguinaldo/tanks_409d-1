@@ -4,11 +4,9 @@ import numpy as np
 from tanks_helper import *
 import os
 from flask import Flask, render_template, request
+from mapr import geocoder_conn_str
 
 app = Flask(__name__)
-
-# TODO: Need to know how to pass the payload from a post request into this route.
-# https://stackoverflow.com/questions/20001229/how-to-get-posted-json-in-flask
 
 
 @app.route('/api/vfrtk', methods=['POST'])
@@ -30,6 +28,12 @@ def vfrtk():
     INPUT_TANK_TYPE = POST_DATA['input_tank_type']
     INPUT_TANK_NAME = POST_DATA['input_tank_name']
     INPUT_FACILITY_NAME = POST_DATA['input_facility_name']
+    INPUT_FACILITY_ADDR = POST_DATA['input_facility_address']
+    INPUT_TANK_GEO = POST_DATA['input_tank_geo']
+
+    geocoder_conn_str(input_addr=INPUT_FACILITY_ADDR,
+                      asset_pos=INPUT_TANK_GEO,
+                      asset_name=INPUT_TANK_NAME)
 
     MET_LIST = filterMetList(df=df_met, input_city=INPUT_CITY)
 
@@ -63,14 +67,7 @@ def vfrtk():
                 tank_type=INPUT_TANK_TYPE,
                 facility_name=INPUT_FACILITY_NAME)
 
-    print('At the end of the script!')
-
     return render_template('vert_fixed_roof_tk.html')
-
-
-@app.route('/is_alive')
-def alive():
-    return 'This App Is Alive!'
 
 
 @app.route('/')
@@ -78,9 +75,19 @@ def index():
     return 'This is Tanks 4.09_d on the Web'
 
 
-@app.route('/results')
-def results():
+@app.route('/emissiondetail')
+def emissiondetail():
     return render_template('vert_fixed_roof_tk.html')
+
+
+@app.route('/summary')
+def summary():
+    return render_template('loss_summary.html')
+
+
+@app.route('/map')
+def map():
+    return render_template('map.html')
 
 
 if __name__ == "__main__":
