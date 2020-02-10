@@ -1,41 +1,54 @@
-            $(document).ready(function () {
-            var counter = 0;
+var cityDropDown = document.getElementById('facilityCity');
+var tankTypeDropDown = document.getElementById('tankType');
+var tankConditionDropDown = document.getElementById('tankCondition');
+var tankColorDropDown = document.getElementById('tankColor');
+var tankShadeDropDown = document.getElementById('tankShade');
+var tankLiquidDropDown = document.getElementById('tankLiquid');
 
-            $("#addrow").on("click", function () {
-                var newRow = $("<tr>");
-                var cols = "";
+for (var i = 0; i < input_met_array.length; i++) {
+    var unitOption = input_met_array[i];
+    var element = document.createElement("option");
+    element.textContent = unitOption;
+    element.value = unitOption;
+    cityDropDown.appendChild(element);
+}
 
-                cols += '<td><input type="text" class="form-control" name="name' + counter + '"/></td>';
-                cols += '<td><input type="text" class="form-control" name="mail' + counter + '"/></td>';
-                cols += '<td><input type="text" class="form-control" name="phone' + counter + '"/></td>';
+for (var i = 0; i < input_condition_color_array.length; i++) {
+    var unitOption = input_condition_color_array[i];
+    var element = document.createElement("option");
+    element.textContent = unitOption;
+    element.value = unitOption;
+    tankColorDropDown.appendChild(element);
+}
 
-                cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
-                newRow.append(cols);
-                $("table.order-list").append(newRow);
-                counter++;
-            });
+for (var i = 0; i < input_condition_shade_array.length; i++) {
+    var unitOption = input_condition_shade_array[i];
+    var element = document.createElement("option");
+    element.textContent = unitOption;
+    element.value = unitOption;
+    tankShadeDropDown.appendChild(element);
+}
 
+for (var i = 0; i < input_condition_condition_array.length; i++) {
+    var unitOption = input_condition_condition_array[i];
+    var element = document.createElement("option");
+    element.textContent = unitOption;
+    element.value = unitOption;
+    tankConditionDropDown.appendChild(element);
+}
 
+for (var i = 0; i < input_tank_type_array.length; i++) {
+    var unitOption = input_tank_type_array[i];
+    var element = document.createElement("option");
+    element.textContent = unitOption;
+    element.value = unitOption;
+    tankTypeDropDown.appendChild(element);
+}
 
-            $("table.order-list").on("click", ".ibtnDel", function (event) {
-                $(this).closest("tr").remove();
-                counter -= 1
-            });
-
-
-        });
-
-
-
-        function calculateRow(row) {
-            var price = +row.find('input[name^="price"]').val();
-
-        }
-
-        function calculateGrandTotal() {
-            var grandTotal = 0;
-            $("table.order-list").find('input[name^="price"]').each(function () {
-                grandTotal += +$(this).val();
-            });
-            $("#grandtotal").text(grandTotal.toFixed(2));
-        }
+for (var i = 0; i < input_contents_type.length; i++) {
+    var unitOption = input_contents_type[i];
+    var element = document.createElement("option");
+    element.textContent = unitOption;
+    element.value = unitOption;
+    tankLiquidDropDown.appendChild(element);
+}
