@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from tanks_helper import *
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from mapr import geocoder_conn_str
 
 app = Flask(__name__)
@@ -12,9 +12,9 @@ app = Flask(__name__)
 @app.route('/api/vfrtk', methods=['POST'])
 def vfrtk():
 
-    df_chem = pd.read_csv('chemical_db.csv')
-    df_met = pd.read_csv('met_db.csv')
-    df_shade = pd.read_csv('table-7-1-6-solarabs.csv')
+    df_chem = pd.read_csv('./input_data/chemical_db.csv')
+    df_met = pd.read_csv('./input_data/met_db.csv')
+    df_shade = pd.read_csv('./input_data/table-7-1-6-solarabs.csv')
 
     POST_DATA = request.get_json()
 
@@ -60,7 +60,7 @@ def vfrtk():
                          ventsetting=DEFAULT_LIST[1],
                          tanktype=INPUT_TANK_TYPE)                # Default
 
-    calculation(df=df_chem,
+    emissionOutput = calculation(df=df_chem,
                 chem_list=CHEM_LIST,
                 annual_qty=ANNUAL_QUANTITY,
                 tank=tank,
@@ -69,14 +69,14 @@ def vfrtk():
                 tank_type=INPUT_TANK_TYPE,
                 facility_name=INPUT_FACILITY_NAME)
 
-    return render_template('vert_fixed_roof_tk.html')
+    return jsonify(emissionOutput) #render_template('vert_fixed_roof_tk.html')
 
 
 @app.route('/is_alive')
 def is_alive():
     return 'This is Tanks 4.09_d on the Web'
 
-
+'''
 @app.route('/emissiondetail')
 def emissiondetail():
     return render_template('vert_fixed_roof_tk.html')
@@ -92,10 +92,13 @@ def map():
     return render_template('map.html')
 
 
+@app.route('/results')
+def results():
+    return render_template('index.html')
+'''
 @app.route('/')
 def index():
-    return render_template('index.html')
-
+    return render_template('main.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

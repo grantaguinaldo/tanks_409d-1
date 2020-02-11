@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TankSys By Envera Consulting</title>
+    
+    <script src="https://kit.fontawesome.com/0339b62909.js" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    
+    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue|IBM+Plex+Sans:300&display=swap" rel="stylesheet">
+    
+    <script type="text/javascript" src="../static/list_elements.js"></script>
+
+</head>
+<body>
+
+    <div class="header-wrapper">
+        <div class="bg-img">
+            <div class="container">   
+                <div class="topnav">
+                    <a href="#">Home</a>
+                    <a href="#">About</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Services</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-text">
+            <h1>Welcome to TankSys&#8482;</h1>
+            <h3>Tanks 4.09d Reimagined</h3>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <form>
+            <div class="form">
+                
+                <div class="facility-info-wrapper">
+
+                    <div class="facility-info-header">
+                        <h1>Step 1: Enter Facility Location Information</h1>
+                        <p>
+                            Please enter the name and address of your facility and select the closest city to your facility from the drop down.
+                        </p>
+                    </div>
+
+                    <div class="facility-info-body">
+                        <ul class='facility-info-ul'>
+                            <li class='form-row'>
+                                <label for="FacilityName">Facility Name:</label>
+                                <input type="text" class="form-control" id="FacilityName" 
+                                placeholder="Enter Facility Name">
+                            </li>
+
+                            <li class='form-row'>
+                                <label for="FacilityAddress">Facility Address:</label>
+                                <input type="text" class="form-control" id="FacilityAddress" 
+                                placeholder="Enter Facility Address">
+                            </li>
+
+                            <li class='form-row'>
+                                <label for="facilityCity">Select City:</label>
+                                <select id="facilityCity"><option select>Select City</option></select>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <div class="facility-info-footer">
+                        <hr class='hr-style'>
+                    </div>
+                </div>
+
+                
+
+                <div class="tank-info-wrapper">
+                    <div class="tank-info-header">
+                        <h1>Step2: Enter Tank Information</h1>
+                        <p>
+                            Please enter information related to your vertical fixed roof storage tank.
+                        </p>
+                    </div>
+
+                    <div class="tank-info-body">
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                    <label for="TankName">Tank Name:</label>
+                                    <input type="text" class="form-control" id="TankName" placeholder="Enter Tank Name">
+                            </li>
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                    <label for="TankLongitude">Tank Longitude:</label>
+                                    <input type="text" class="form-control" id="TankLongitude" placeholder="Enter Tank Longitude">
+                            </li>
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                    <label for="TankLatitude">Tank Latitude:</label>
+                                    <input type="text" class="form-control" id="TankLatitude" placeholder="Enter Tank Latitude">
+                            </li>
+                        </div>
+
+                            
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                    <label for="TankHeight">Shell Height:&nbsp;</label>
+                                    <input type="text" class="form-control" id="TankHeight" placeholder="Enter Shell Height in Feet">
+                            </li>
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                    <label for="TankDiameter">Shell Diameter:&nbsp;</label>
+                                    <input type="text" class="form-control" id="TankDiameter" placeholder="Enter Shell Diameter in Feet">
+                            </li>
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                    <label for="AvgLiqHeight">Average Liquid Height:&nbsp;</label>
+                                    <input type="text" class="form-control" id="AvgLiqHeight" placeholder="Enter Average Liquid Height in Feet">
+                            </li>
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                    <label for="AnnThroughput">Annual Tank Throughput:&nbsp;</label>
+                                    <input type="text" class="form-control" id="AnnThroughput" placeholder="Enter Annual Tank Throughput in Gallons">
+                            </li>
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                    <label for="AvgLowerLiquid">Average Lower Liquid Level:&nbsp;</label>
+                                    <input type="text" class="form-control" id="AvgLowerLiquid" placeholder="Enter Average Lower Liquid Height, in Feet">
+                            </li>
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                    <label for="AvgHigherLiquid">Average Higher Liquid Level:&nbsp;</label>
+                                    <input type="text" class="form-control" id="AvgHigherLiquid" placeholder="Enter Average Higher Liquid Level, in Feet">
+                            </li>
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                <p>Tank Type:<select id="tankType">
+                                    <option select>Choose a Tank Type</option>
+                                </select>
+                            </p>    
+                            </li>
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                <p>Liquid Type:<select id="tankLiquid">
+                                    <option select>Choose a Liquid Type</option>
+                                </select>
+                            </p>    
+                            </li>
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                <p>Tank Condition:<select id="tankCondition">
+                                    <option select>Choose a Condition</option>
+                                </select>
+                            </p>    
+                            </li>
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                <p>Tank Color:<select id="tankColor">
+                                    <option select>Choose a Color</option>
+                                </select>
+                            </p>    
+                            </li>
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                <p>Tank Shade:<select id="tankShade">
+                                    <option select>Choose a Shade</option>
+                                </select>
+                            </p>    
+                            </li>
+                        </div>         
+                    </div>
+
+                    <div class="tank-info-footer">
+                        <hr class='hr-style'>
+                    </div>
+                </div>
+
+                <div class="tank-contents-wrapper">
+                    <div class="tank-contents-header">
+                        <h1>TANK CONTENTS</h1>
+                        <p>Please enter the contents of your storage tank.</p>
+                    </div>
+
+                    <div class="tank-contents-body">
+                        <p>
+                            Place dynamic table here.
+                        </p>
+                    </div>
+                
+                    <div class="tank-contents-footer">
+                        <hr class='hr-style'>
+                    </div>
+                </div>
+
+                <div class="tank-submit-wrapper">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="reset" class="btn btn-primary">Clear</button>
+                </div>
+
+        </form>
+
+    </div>
+
+    <div class="footer-wrapper">
+        <div class="call-out">
+            <h4>Feature 1</h4>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus labore ut ab iste provident quis dolor suscipit aliquid impedit eligendi.</p>
+        </div>
+
+        <div class="call-out">
+            <h4>Feature 2</h4>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus labore ut ab iste provident quis dolor suscipit aliquid impedit eligendi.</p>
+        </div>
+
+        <div class="call-out">
+            <h4>Feature 3</h4>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus labore ut ab iste provident quis dolor suscipit aliquid impedit eligendi.</p>
+        </div>
+
+    </div>
+
+    <div class="footer-copyright">
+        <ul>
+            <li>
+                <a href="https://www.enveraconsulting.com">&copy; 2020 Envilearn, LLC DBA Envera Consulting</a>
+            </li>
+        </ul>
+    </div>
+    
+</body>
+<script type="text/javascript" src="../static/app.js"></script>
+</html>

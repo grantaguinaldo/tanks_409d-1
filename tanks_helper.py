@@ -127,26 +127,32 @@ def calculation(df, chem_list, annual_qty,
     working_losses = np.sum(df1['work_loss_xi'].values.tolist())
     standing_losses = np.sum(df1['stand_loss_xi'].values.tolist())
 
-    df1.T.to_html(os.path.join('templates', file_name),
-                  classes=['emission summary'],
-                  border=1,
-                  bold_rows=True)
-
     df2 = pd.DataFrame({'standing_losses': [standing_losses],
                         'working_losses': [working_losses],
                         'total_losses': [total_losses]},
                        index=[tank_name])
 
+    '''
+    df1.T.to_html(os.path.join('templates', file_name),
+                  classes=['emission summary'],
+                  border=1,
+                  bold_rows=True)
+
     df2.to_html(os.path.join('templates', 'loss_summary.html'),
                 classes=['loss summary'],
                 border=1,
                 bold_rows=True)
+   
 
     loss_list = [total_losses, working_losses, standing_losses]
 
     print(loss_list)
 
-    return loss_list
+    df2_json = df2.to_json(orient='columns')
+    df1_json = df1.to_json(orient='split')
+    '''
+
+    return  {'summary': df2.to_dict(), 'detail': df1.T.to_dict()}
 
 
 class FixedRoofTank:

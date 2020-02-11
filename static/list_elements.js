@@ -1,4 +1,3 @@
-// Options for input_tank_type.
 var input_tank_type_array = ["Vertical", "Horizontal"];
 
 var input_condition_color_array = ['Beige/Cream',
@@ -26,8 +25,6 @@ var input_condition_color_array = ['Beige/Cream',
 
  var input_contents_type = ['other stocks', 'crude oils'];
 
-
-// Options for 'input_chem'
  var input_chem_array = ['Acetaldehyde',
 'Acetic acid',
 'Acetic anhydride',
