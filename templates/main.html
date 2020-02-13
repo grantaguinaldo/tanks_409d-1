@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TankSys By Envera Consulting</title>
-    
+    <link rel="stylesheet" type="text/css" href="../static/BootStrap.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/0339b62909.js" crossorigin="anonymous"></script>
-    
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/style.css">
-    
+
     <link href="https://fonts.googleapis.com/css?family=Bebas+Neue|IBM+Plex+Sans:300&display=swap" rel="stylesheet">
-    
+
     <script type="text/javascript" src="../static/list_elements.js"></script>
 
 </head>
@@ -18,7 +21,7 @@
 
     <div class="header-wrapper">
         <div class="bg-img">
-            <div class="container">   
+            <div class="container">
                 <div class="topnav">
                     <a href="#">Home</a>
                     <a href="#">About</a>
@@ -38,7 +41,7 @@
     <div class="main-wrapper">
         <form>
             <div class="form">
-                
+
                 <div class="facility-info-wrapper">
 
                     <div class="facility-info-header">
@@ -52,14 +55,14 @@
                         <ul class='facility-info-ul'>
                             <li class='form-row'>
                                 <label for="FacilityName">Facility Name:</label>
-                                <input type="text" class="form-control" id="FacilityName" 
-                                placeholder="Enter Facility Name">
+                                <input type="text" class="form-control" id="FacilityName"
+                                       placeholder="Enter Facility Name">
                             </li>
 
                             <li class='form-row'>
                                 <label for="FacilityAddress">Facility Address:</label>
-                                <input type="text" class="form-control" id="FacilityAddress" 
-                                placeholder="Enter Facility Address">
+                                <input type="text" class="form-control" id="FacilityAddress"
+                                       placeholder="Enter Facility Address">
                             </li>
 
                             <li class='form-row'>
@@ -75,7 +78,7 @@
                     </div>
                 </div>
 
-                
+
 
                 <div class="tank-info-wrapper">
                     <div class="tank-info-header">
@@ -88,112 +91,117 @@
                     <div class="tank-info-body">
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                    <label for="TankName">Tank Name:</label>
-                                    <input type="text" class="form-control" id="TankName" placeholder="Enter Tank Name">
+                                <label for="TankName">Tank Name:</label>
+                                <input type="text" class="form-control" id="TankName" placeholder="Enter Tank Name">
                             </li>
                         </div>
 
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                    <label for="TankLongitude">Tank Longitude:</label>
-                                    <input type="text" class="form-control" id="TankLongitude" placeholder="Enter Tank Longitude">
+                                <label for="TankLongitude">Tank Longitude:</label>
+                                <input type="text" class="form-control" id="TankLongitude" placeholder="Enter Tank Longitude">
                             </li>
                         </div>
 
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                    <label for="TankLatitude">Tank Latitude:</label>
-                                    <input type="text" class="form-control" id="TankLatitude" placeholder="Enter Tank Latitude">
+                                <label for="TankLatitude">Tank Latitude:</label>
+                                <input type="text" class="form-control" id="TankLatitude" placeholder="Enter Tank Latitude">
                             </li>
                         </div>
 
-                            
-                        <div class="tank-info-ul">
-                            <li class=form-row>
-                                    <label for="TankHeight">Shell Height:&nbsp;</label>
-                                    <input type="text" class="form-control" id="TankHeight" placeholder="Enter Shell Height in Feet">
-                            </li>
-                        </div>
 
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                    <label for="TankDiameter">Shell Diameter:&nbsp;</label>
-                                    <input type="text" class="form-control" id="TankDiameter" placeholder="Enter Shell Diameter in Feet">
+                                <label for="TankHeight">Shell Height:&nbsp;</label>
+                                <input type="text" class="form-control" id="TankHeight" placeholder="Enter Shell Height in Feet">
                             </li>
                         </div>
 
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                    <label for="AvgLiqHeight">Average Liquid Height:&nbsp;</label>
-                                    <input type="text" class="form-control" id="AvgLiqHeight" placeholder="Enter Average Liquid Height in Feet">
+                                <label for="TankDiameter">Shell Diameter:&nbsp;</label>
+                                <input type="text" class="form-control" id="TankDiameter" placeholder="Enter Shell Diameter in Feet">
                             </li>
                         </div>
 
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                    <label for="AnnThroughput">Annual Tank Throughput:&nbsp;</label>
-                                    <input type="text" class="form-control" id="AnnThroughput" placeholder="Enter Annual Tank Throughput in Gallons">
+                                <label for="AvgLiqHeight">Average Liquid Height:&nbsp;</label>
+                                <input type="text" class="form-control" id="AvgLiqHeight" placeholder="Enter Average Liquid Height in Feet">
                             </li>
                         </div>
 
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                    <label for="AvgLowerLiquid">Average Lower Liquid Level:&nbsp;</label>
-                                    <input type="text" class="form-control" id="AvgLowerLiquid" placeholder="Enter Average Lower Liquid Height, in Feet">
+                                <label for="AnnThroughput">Annual Tank Throughput:&nbsp;</label>
+                                <input type="text" class="form-control" id="AnnThroughput" placeholder="Enter Annual Tank Throughput in Gallons">
                             </li>
                         </div>
 
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                    <label for="AvgHigherLiquid">Average Higher Liquid Level:&nbsp;</label>
-                                    <input type="text" class="form-control" id="AvgHigherLiquid" placeholder="Enter Average Higher Liquid Level, in Feet">
+                                <label for="AvgLowerLiquid">Average Lower Liquid Level:&nbsp;</label>
+                                <input type="text" class="form-control" id="AvgLowerLiquid" placeholder="Enter Average Lower Liquid Height, in Feet">
                             </li>
                         </div>
 
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                <p>Tank Type:<select id="tankType">
-                                    <option select>Choose a Tank Type</option>
-                                </select>
-                            </p>    
+                                <label for="AvgHigherLiquid">Average Higher Liquid Level:&nbsp;</label>
+                                <input type="text" class="form-control" id="AvgHigherLiquid" placeholder="Enter Average Higher Liquid Level, in Feet">
                             </li>
                         </div>
 
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                <p>Liquid Type:<select id="tankLiquid">
-                                    <option select>Choose a Liquid Type</option>
-                                </select>
-                            </p>    
+                                <p>
+                                    Tank Type:<select id="tankType">
+                                        <option select>Choose a Tank Type</option>
+                                    </select>
+                                </p>
                             </li>
                         </div>
 
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                <p>Tank Condition:<select id="tankCondition">
-                                    <option select>Choose a Condition</option>
-                                </select>
-                            </p>    
+                                <p>
+                                    Liquid Type:<select id="tankLiquid">
+                                        <option select>Choose a Liquid Type</option>
+                                    </select>
+                                </p>
                             </li>
                         </div>
 
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                <p>Tank Color:<select id="tankColor">
-                                    <option select>Choose a Color</option>
-                                </select>
-                            </p>    
+                                <p>
+                                    Tank Condition:<select id="tankCondition">
+                                        <option select>Choose a Condition</option>
+                                    </select>
+                                </p>
                             </li>
                         </div>
 
                         <div class="tank-info-ul">
                             <li class=form-row>
-                                <p>Tank Shade:<select id="tankShade">
-                                    <option select>Choose a Shade</option>
-                                </select>
-                            </p>    
+                                <p>
+                                    Tank Color:<select id="tankColor">
+                                        <option select>Choose a Color</option>
+                                    </select>
+                                </p>
                             </li>
-                        </div>         
+                        </div>
+
+                        <div class="tank-info-ul">
+                            <li class=form-row>
+                                <p>
+                                    Tank Shade:<select id="tankShade">
+                                        <option select>Choose a Shade</option>
+                                    </select>
+                                </p>
+                            </li>
+                        </div>
                     </div>
 
                     <div class="tank-info-footer">
@@ -206,24 +214,91 @@
                         <h1>TANK CONTENTS</h1>
                         <p>Please enter the contents of your storage tank.</p>
                     </div>
-
+                    <center>
                     <div class="tank-contents-body">
-                        <p>
-                            Place dynamic table here.
-                        </p>
-                    </div>
-                
-                    <div class="tank-contents-footer">
-                        <hr class='hr-style'>
-                    </div>
-                </div>
+                            <div class="row clearfix">
+                                <div class="col-md-12 table-responsive">
+                                    <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">
+                                                    Chemical
+                                                </th>
+                                                <th class="text-center">
+                                                    Qunatity
+                                                </th>
+                                             
+                                                <th class="text-center" style="border-top: 1px solid #ffffff; border-right: 1px solid #ffffff;">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id='addr0' data-id="0" class="hidden">
+                                                <td data-name="name">
+                                                 <select  name="contents" class="contents" >
+                                                        <option select>Choose Chemical</option>
+                                                    </select>
+                                                </td>
+                                                <td data-name="mail">
+                                                    <input type="text" class="quantity" placeholder="quantity">
+                                                </td>
+                                               
+                                                <td data-name="del">
+                                                    <button name="del0" class='btn btn-danger row-remove'><span aria-hidden="true">×</span></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <a id="add_row" class="btn btn-primary float-left">Add Row</a></center>
+                        
+                        <div>
+                        <!-- The Modal -->
+                        <div id="myModal" class="modal">
+                        
+                          <!-- Modal content -->
+                          <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <center>
+                                <div class="tank-contents-header">
+                                    
+                                <h1>Fixed Roof Tank Calculations</h1>
+                                </div>
+                            </center>
+                            <br>
+                            <center>
+                                <iframe id='map' src="/map" width="600" height="500" frameBorder="0"></iframe>
+                            </center>
+                            <br>
+                            <hr class='hr-style'>
+                            <center>                              
+                                <div id="emissiondetail">emissiondetail</div>
+                            </center>
+                            
+                                <br>
+                                <hr class='hr-style'>
+                            <center>
+                                 <div id="summary">summary</div>
+                            </center>
+                        
+                          </div>
+                        
+                        </div>
+    </div>
 
-                <div class="tank-submit-wrapper">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <button type="reset" class="btn btn-primary">Clear</button>
-                </div>
+    <div class="tank-contents-footer">
+        <hr class='hr-style'>
+    </div>
 
-        </form>
+
+    <div >
+        <button  id="submit"  type='button' class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-primary">Clear</button>
+    </div>
+
+    </form>
 
     </div>
 
@@ -252,7 +327,11 @@
             </li>
         </ul>
     </div>
+
+
+   
+
     
 </body>
-<script type="text/javascript" src="../static/app.js"></script>
 </html>
+<script type="text/javascript" src="../static/app.js"></script>
