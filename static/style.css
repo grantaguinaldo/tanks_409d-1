@@ -19,6 +19,7 @@ input:focus, textarea:focus, select:focus{
 
 select {
   font-size: 16px;
+  flex: 2.1;
 }
 
 option {
